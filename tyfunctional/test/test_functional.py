@@ -4,9 +4,9 @@ import array
 from collections import namedtuple, deque
 from itertools import product
 
-from functional.pipeline import Sequence, is_iterable, _wrap, extend
-from functional.transformations import name
-from functional import seq, pseq
+from tyfunctional.pipeline import Sequence, is_iterable, _wrap, extend
+from tyfunctional.transformations import name
+from tyfunctional import seq, pseq
 
 from parametrize import parametrize  # type: ignore
 
@@ -623,7 +623,7 @@ class TestPipeline(unittest.TestCase):
 
     def test_join(self):
         with self.assertRaises(TypeError):
-            self.seq([(1, 2)]).join([(2, 3)], "").to_list()
+            self.seq([(1, 2)]).join([(2, 3)], "").to_list()  # type: ignore[call-overload]
 
     def test_max(self):
         l = [1, 2, 3]

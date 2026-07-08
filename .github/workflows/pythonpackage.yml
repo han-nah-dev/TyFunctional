@@ -32,15 +32,15 @@ jobs:
             poetry install
           fi
       - name: Pylint (Python v${{ matrix.python-version }})
-        run: poetry run pylint functional
+        run: poetry run pylint tyfunctional
       - name: black (Python v${{ matrix.python-version }})
-        run: poetry run black --diff --check functional
+        run: poetry run black --diff --check tyfunctional
         if: always()
       - name: Test with pytest (Python v${{ matrix.python-version }})
-        run: poetry run pytest --cov=functional --cov-report=xml
+        run: poetry run pytest --cov=tyfunctional --cov-report=xml
         if: always()
       - name: mypy (Python v${{ matrix.python-version }})
-        run: poetry run mypy functional
+        run: poetry run mypy tyfunctional
         if: always()
       - uses: codecov/codecov-action@v1
         with:

@@ -4,7 +4,7 @@ from collections import namedtuple
 from functools import reduce
 from operator import add
 
-from functional.util import (
+from tyfunctional.util import (
     is_namedtuple,
     lazy_parallelize,
     split_every,

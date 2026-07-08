@@ -1,5 +1,5 @@
-from functional.execution import ExecutionEngine
-from functional.transformations import CACHE_T
+from tyfunctional.execution import ExecutionEngine
+from tyfunctional.transformations import CACHE_T
 
 
 class Lineage:

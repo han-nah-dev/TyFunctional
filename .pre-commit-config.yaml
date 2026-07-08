@@ -8,17 +8,17 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: poetry run pylint functional
+        entry: poetry run pylint tyfunctional
         language: system
         pass_filenames: false
       - id: black
         name: black
-        entry: poetry run black functional
+        entry: poetry run black tyfunctional
         language: system
         pass_filenames: false
       - id: mypy
         name: mypy
-        entry: poetry run mypy functional
+        entry: poetry run mypy tyfunctional
         language: system
         pass_filenames: false
 

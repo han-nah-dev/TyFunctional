@@ -1,5 +1,5 @@
 """
-The pipeline module contains the transformations and actions API of PyFunctional
+The pipeline module contains the transformations and actions API of TyFunctional
 """
 
 from __future__ import annotations
@@ -14,13 +14,13 @@ import re
 
 from typing import TYPE_CHECKING
 import typing
-from typing import NamedTuple, TypeVar, Generic, overload
+from typing import Any, NamedTuple, TypeVar, Generic, overload
 
 from tabulate import tabulate
 
-from functional.execution import ExecutionEngine
-from functional.lineage import Lineage
-from functional.util import (
+from tyfunctional.execution import ExecutionEngine
+from tyfunctional.lineage import Lineage
+from tyfunctional.util import (
     is_iterable,
     is_primitive,
     is_namedtuple,
@@ -28,9 +28,9 @@ from functional.util import (
     identity,
     default_value,
 )
-from functional.io import WRITE_MODE, universal_write_open
-from functional import transformations
-from functional.execution import ExecutionStrategies
+from tyfunctional.io import WRITE_MODE, universal_write_open
+from tyfunctional import transformations
+from tyfunctional.execution import ExecutionStrategies
 
 
 _T_co = TypeVar("_T_co", covariant=True)  # Main Sequence Generic Type
@@ -39,12 +39,13 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
 
     # pylint: disable=deprecated-class
-    from typing import Callable, Any, NoReturn
+    from typing import Callable, NoReturn, Literal, SupportsIndex
     from collections.abc import Iterator, Hashable
     from _typeshed import SupportsRichComparison
     from _typeshed import SupportsRichComparisonT
     from typing_extensions import TypeGuard
     from typing_extensions import Self
+    from typing_extensions import TypeVarTuple, Unpack
 
     from lzma import _FilterChain
     from pandas import DataFrame
@@ -60,10 +61,15 @@ if TYPE_CHECKING:
     _T = TypeVar("_T")
     _U = TypeVar("_U")
     _V = TypeVar("_V")
+    _W = TypeVar("_W")
     _K = TypeVar("_K")
 
     _P = TypeVar("_P")
     _R = TypeVar("_R")
+
+    _Ts = TypeVarTuple("_Ts")
+    # Numeric type var for sum/product: resolves to the concrete numeric type
+    _NumT = TypeVar("_NumT", int, float, complex)
 
 
 class Sequence(Generic[_T_co]):
@@ -100,7 +106,7 @@ class Sequence(Generic[_T_co]):
             self._max_repr_items: int | None = (
                 max_repr_items or sequence._max_repr_items
             )
-            self._base_sequence: Iterable | list | tuple = sequence._base_sequence
+            self._base_sequence: Iterable[_T_co] = sequence._base_sequence
             self._lineage: Lineage = Lineage(
                 prior_lineage=sequence._lineage, engine=engine
             )
@@ -184,7 +190,15 @@ class Sequence(Generic[_T_co]):
         """
         return self.size() != 0
 
-    def __getitem__(self, item) -> _T_co:
+    @overload
+    def __getitem__(self, item: SupportsIndex) -> _T_co:
+        ...
+
+    @overload
+    def __getitem__(self, item: slice) -> Sequence[_T_co]:
+        ...
+
+    def __getitem__(self, item):
         """
         Gets item at given index.
 
@@ -630,41 +644,9 @@ class Sequence(Generic[_T_co]):
         """
         return self._transform(transformations.select_t(func))
 
-    @overload
-    def starmap(self: Sequence[tuple[_T1]], func: Callable[[_T1], _R]) -> Sequence[_R]:
-        ...
-
-    @overload
     def starmap(
-        self: Sequence[tuple[_T1, _T2]], func: Callable[[_T1, _T2], _R]
+        self: Sequence[tuple[Unpack[_Ts]]], func: Callable[[Unpack[_Ts]], _R]
     ) -> Sequence[_R]:
-        ...
-
-    @overload
-    def starmap(
-        self: Sequence[tuple[_T1, _T2, _T3]], func: Callable[[_T1, _T2, _T3], _R]
-    ) -> Sequence[_R]:
-        ...
-
-    @overload
-    def starmap(
-        self: Sequence[tuple[_T1, _T2, _T3, _T4]],
-        func: Callable[[_T1, _T2, _T3, _T4], _R],
-    ) -> Sequence[_R]:
-        ...
-
-    @overload
-    def starmap(
-        self: Sequence[tuple[_T1, _T2, _T3, _T4, _T5]],
-        func: Callable[[_T1, _T2, _T3, _T4, _T5], _R],
-    ) -> Sequence[_R]:
-        ...
-
-    @overload
-    def starmap(self, func: Callable[..., _R]) -> Sequence[_R]:
-        ...
-
-    def starmap(self, func):
         """
         starmaps f onto the sequence as itertools.starmap does.
 
@@ -676,41 +658,9 @@ class Sequence(Generic[_T_co]):
         """
         return self._transform(transformations.starmap_t(func))
 
-    @overload
-    def smap(self: Sequence[tuple[_T1]], func: Callable[[_T1], _R]) -> Sequence[_R]:
-        ...
-
-    @overload
     def smap(
-        self: Sequence[tuple[_T1, _T2]], func: Callable[[_T1, _T2], _R]
+        self: Sequence[tuple[Unpack[_Ts]]], func: Callable[[Unpack[_Ts]], _R]
     ) -> Sequence[_R]:
-        ...
-
-    @overload
-    def smap(
-        self: Sequence[tuple[_T1, _T2, _T3]], func: Callable[[_T1, _T2, _T3], _R]
-    ) -> Sequence[_R]:
-        ...
-
-    @overload
-    def smap(
-        self: Sequence[tuple[_T1, _T2, _T3, _T4]],
-        func: Callable[[_T1, _T2, _T3, _T4], _R],
-    ) -> Sequence[_R]:
-        ...
-
-    @overload
-    def smap(
-        self: Sequence[tuple[_T1, _T2, _T3, _T4, _T5]],
-        func: Callable[[_T1, _T2, _T3, _T4, _T5], _R],
-    ) -> Sequence[_R]:
-        ...
-
-    @overload
-    def smap(self, func: Callable[..., _R]) -> Sequence[_R]:
-        ...
-
-    def smap(self, func):
         """
         Alias to Sequence.starmap
 
@@ -1210,7 +1160,15 @@ class Sequence(Generic[_T_co]):
         """
         return separator.join(str(e) for e in self)
 
-    def product(self, projection: Callable[[_T_co], float] | None = None) -> float:
+    @overload
+    def product(self: Sequence[_NumT]) -> _NumT:
+        ...
+
+    @overload
+    def product(self, projection: Callable[[_T_co], _NumT]) -> _NumT:
+        ...
+
+    def product(self, projection=None):
         """
         Takes product of elements in sequence.
 
@@ -1242,7 +1200,15 @@ class Sequence(Generic[_T_co]):
         else:
             return self.reduce(mul)  # type: ignore
 
-    def sum(self, projection: Callable[[_T_co], float] | None = None) -> float:
+    @overload
+    def sum(self: Sequence[_NumT]) -> _NumT:
+        ...
+
+    @overload
+    def sum(self, projection: Callable[[_T_co], _NumT]) -> _NumT:
+        ...
+
+    def sum(self, projection=None):
         """
         Takes sum of elements in sequence.
 
@@ -1260,7 +1226,15 @@ class Sequence(Generic[_T_co]):
         else:
             return sum(self)  # type: ignore
 
-    def average(self, projection: Callable[[_T_co], float] | None = None) -> float:
+    @overload
+    def average(self: Sequence[float]) -> float:
+        ...
+
+    @overload
+    def average(self, projection: Callable[[_T_co], float]) -> float:
+        ...
+
+    def average(self, projection=None):
         """
         Takes the average of elements in the sequence
 
@@ -1279,18 +1253,18 @@ class Sequence(Generic[_T_co]):
             return sum(self) / length  # type: ignore
 
     @overload
-    def aggregate(self, func: Callable[[Sequence[_T], _T], _T], /) -> _T:
+    def aggregate(self, func: Callable[[_T_co, _T_co], _T_co], /) -> _T_co:
         ...
 
     @overload
-    def aggregate(self, seed: _T, func: Callable[[_T, _T], _T], /) -> _T:
+    def aggregate(self, seed: _T, func: Callable[[_T, _T_co], _T], /) -> _T:
         ...
 
     @overload
     def aggregate(
         self,
         seed: _T,
-        func: Callable[[_T, _T], _T],
+        func: Callable[[_T, _T_co], _T],
         result_map: Callable[[_T], _R],
         /,
     ) -> _R:
@@ -1418,7 +1392,9 @@ class Sequence(Generic[_T_co]):
         """
         return self._transform(transformations.enumerate_t(start))
 
-    def inner_join(self, other):
+    def inner_join(
+        self: Sequence[tuple[_K, _V]], other: Iterable[tuple[_K, _W]]
+    ) -> Sequence[tuple[_K, tuple[_V, _W]]]:
         """
         Sequence and other must be composed of (Key, Value) pairs.
         If self.sequence contains (K, V) pairs and other contains (K, W) pairs, the return result
@@ -1432,6 +1408,38 @@ class Sequence(Generic[_T_co]):
         :return: joined sequence of (K, (V, W)) pairs
         """
         return self.join(other, "inner")
+
+    @overload
+    def join(
+        self: Sequence[tuple[_K, _V]],
+        other: Iterable[tuple[_K, _W]],
+        join_type: Literal["inner"] = "inner",
+    ) -> Sequence[tuple[_K, tuple[_V, _W]]]:
+        ...
+
+    @overload
+    def join(
+        self: Sequence[tuple[_K, _V]],
+        other: Iterable[tuple[_K, _W]],
+        join_type: Literal["left"],
+    ) -> Sequence[tuple[_K, tuple[_V, _W | None]]]:
+        ...
+
+    @overload
+    def join(
+        self: Sequence[tuple[_K, _V]],
+        other: Iterable[tuple[_K, _W]],
+        join_type: Literal["right"],
+    ) -> Sequence[tuple[_K, tuple[_V | None, _W]]]:
+        ...
+
+    @overload
+    def join(
+        self: Sequence[tuple[_K, _V]],
+        other: Iterable[tuple[_K, _W]],
+        join_type: Literal["outer"],
+    ) -> Sequence[tuple[_K, tuple[_V | None, _W | None]]]:
+        ...
 
     def join(self, other, join_type="inner"):
         """
@@ -1463,7 +1471,9 @@ class Sequence(Generic[_T_co]):
         """
         return self._transform(transformations.join_t(other, join_type))
 
-    def left_join(self, other):
+    def left_join(
+        self: Sequence[tuple[_K, _V]], other: Iterable[tuple[_K, _W]]
+    ) -> Sequence[tuple[_K, tuple[_V, _W | None]]]:
         """
         Sequence and other must be composed of (Key, Value) pairs. If self.sequence contains (K, V)
         pairs and other contains (K, W) pairs, the return result is a sequence of (K, (V, W)) pairs.
@@ -1477,7 +1487,9 @@ class Sequence(Generic[_T_co]):
         """
         return self.join(other, "left")
 
-    def right_join(self, other):
+    def right_join(
+        self: Sequence[tuple[_K, _V]], other: Iterable[tuple[_K, _W]]
+    ) -> Sequence[tuple[_K, tuple[_V | None, _W]]]:
         """
         Sequence and other must be composed of (Key, Value) pairs. If self.sequence contains (K, V)
         pairs and other contains (K, W) pairs, the return result is a sequence of (K, (V, W)) pairs.
@@ -1491,7 +1503,9 @@ class Sequence(Generic[_T_co]):
         """
         return self.join(other, "right")
 
-    def outer_join(self, other):
+    def outer_join(
+        self: Sequence[tuple[_K, _V]], other: Iterable[tuple[_K, _W]]
+    ) -> Sequence[tuple[_K, tuple[_V | None, _W | None]]]:
         """
         Sequence and other must be composed of (Key, Value) pairs. If self.sequence contains (K, V)
         pairs and other contains (K, W) pairs, the return result is a sequence of (K, (V, W)) pairs.
@@ -1634,7 +1648,7 @@ class Sequence(Generic[_T_co]):
         list
 
         >>> type(seq([]))
-        functional.pipeline.Sequence
+        tyfunctional.pipeline.Sequence
 
         >>> seq([1, 2, 3]).to_list()
         [1, 2, 3]
@@ -1656,7 +1670,7 @@ class Sequence(Generic[_T_co]):
         list
 
         >>> type(seq([]))
-        functional.pipeline.Sequence
+        tyfunctional.pipeline.Sequence
 
         >>> seq([1, 2, 3]).list()
         [1, 2, 3]
@@ -1674,7 +1688,7 @@ class Sequence(Generic[_T_co]):
         set
 
         >>> type(seq([]))
-        functional.pipeline.Sequence
+        tyfunctional.pipeline.Sequence
 
         >>> seq([1, 1, 2, 2]).to_set()
         {1, 2}
@@ -1691,7 +1705,7 @@ class Sequence(Generic[_T_co]):
         set
 
         >>> type(seq([]))
-        functional.pipeline.Sequence
+        tyfunctional.pipeline.Sequence
 
         >>> seq([1, 1, 2, 2]).set()
         {1, 2}
@@ -2097,8 +2111,8 @@ class Sequence(Generic[_T_co]):
 
 _PrimitiveT = TypeVar("_PrimitiveT", str, bool, float, complex, bytes, int)
 _NamedTupleT = TypeVar("_NamedTupleT", bound=NamedTuple)
-_DictT = TypeVar("_DictT", bound=dict)
-_SetT = TypeVar("_SetT", bound=set)
+_DictT = TypeVar("_DictT", bound=dict[Any, Any])
+_SetT = TypeVar("_SetT", bound=set[Any])
 
 
 @overload
@@ -2138,7 +2152,7 @@ def _wrap(value):
     ['a', 'b', 'c']
 
     >>> type(_wrap([1, 2]))
-    functional.pipeline.Sequence
+    tyfunctional.pipeline.Sequence
 
     :param value: value to wrap
     :return: wrapped or not wrapped value

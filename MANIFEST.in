@@ -1,5 +1,5 @@
 recursive-include examples
-recursive-include functional/tests/data
+recursive-include tyfunctional/test/data
 include README.md
 include CHANGELOG.md
 include DEVELOPER.md

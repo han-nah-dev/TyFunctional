@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# ScalaFunctional documentation build configuration file, created by
+# TyFunctional documentation build configuration file, created by
 # sphinx-quickstart on Wed Mar 11 23:00:20 2015.
 #
 # This file is execfile()d with the current directory set to its
@@ -49,7 +49,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "PyFunctional"
+project = "TyFunctional"
 copyright = "2019, Pedro Rodriguez"
 author = "Pedro Rodriguez"
 
@@ -203,7 +203,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "PyFunctionaldoc"
+htmlhelp_basename = "TyFunctionaldoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -224,8 +224,8 @@ latex_elements: dict[str, str] = {
 latex_documents = [
     (
         master_doc,
-        "PyFunctional.tex",
-        "PyFunctional Documentation",
+        "TyFunctional.tex",
+        "TyFunctional Documentation",
         "Pedro Rodriguez",
         "manual",
     ),
@@ -256,7 +256,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "pyfunctional", "PyFunctional Documentation", [author], 1)]
+man_pages = [(master_doc, "tyfunctional", "TyFunctional Documentation", [author], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -270,10 +270,10 @@ man_pages = [(master_doc, "pyfunctional", "PyFunctional Documentation", [author]
 texinfo_documents = [
     (
         master_doc,
-        "PyFunctional",
-        "PyFunctional Documentation",
+        "TyFunctional",
+        "TyFunctional Documentation",
         author,
-        "PyFunctional",
+        "TyFunctional",
         "One line description of project.",
         "Miscellaneous",
     ),

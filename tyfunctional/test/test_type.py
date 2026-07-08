@@ -4,9 +4,10 @@ from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
-    from typing import Any, Iterator
-    from functional import seq
-    from functional.pipeline import Sequence
+    from typing import Any, Iterator, Optional
+    from typing_extensions import assert_type
+    from tyfunctional import seq, pseq
+    from tyfunctional.pipeline import Sequence
     from pandas import DataFrame
 
     def type_checking() -> None:
@@ -180,16 +181,6 @@ if TYPE_CHECKING:
 
         t_enumerate: Sequence[tuple[int, str]] = seq(["a", "b", "c"]).enumerate(start=1)
 
-        # t_inner_join: Sequence[tuple[str, Sequence[int]]] = seq([('a', 1), ('b', 2), ('c', 3)]).inner_join([('a', 2), ('c', 5)])
-
-        # t_join = num_seq.join()
-
-        # t_left_join: Sequence[tuple[str,Sequence[int | None]]] = seq([('a', 1), ('b', 2)]).join([('a', 3), ('c', 4)])
-
-        # t_right_join: Sequence[tuple[str,Sequence[int | None]]] = seq([('a', 1), ('b', 2)]).join([('a', 3), ('c', 4)])
-
-        # t_outer_join: Sequence[tuple[str,Sequence[int | None]]] = seq([('a', 1), ('b', 2)]).outer_join([('a', 3), ('c', 4)])
-
         t_partition: tuple[Sequence[int], Sequence[int]] = seq(
             [-1, 1, -2, 2]
         ).partition(lambda x: x < 0)
@@ -251,3 +242,82 @@ if TYPE_CHECKING:
         t__repr_html_: str | None = num_seq._repr_html_()
 
         t_tabulate: str | None = num_seq.tabulate()
+
+    def type_checking_strict() -> None:
+        """
+        Strict type assertions using assert_type. Unlike annotated assignments above,
+        assert_type fails if the expression's inferred type degrades to Any, so these
+        also guard against regressions in overload resolution.
+        """
+        kv_pairs: list[tuple[str, int]] = [("a", 1), ("b", 2)]
+        kv_seq = seq(kv_pairs)
+        assert_type(kv_seq, Sequence[tuple[str, int]])
+
+        # Entry points
+        assert_type(seq([1, 2, 3]), Sequence[int])
+        assert_type(seq(1, 2, 3), Sequence[int])
+        assert_type(seq(range(3)), Sequence[int])
+        assert_type(seq.range(3), Sequence[int])
+        assert_type(seq.chain([1], [2]), Sequence[int])
+        assert_type(pseq([1, 2, 3]), Sequence[int])
+        assert_type(pseq(1, 2, 3), Sequence[int])
+        assert_type(pseq.range(3), Sequence[int])
+
+        # Chained transformations infer through the chain, including lambdas
+        assert_type(
+            seq([1, 2, 3]).map(lambda x: x * 2).filter(lambda x: x > 2).to_list(),
+            list[int],
+        )
+        assert_type(seq([1, 2, 3]).map(str), Sequence[str])
+        assert_type(pseq([1, 2, 3]).map(str).to_list(), list[str])
+
+        # Joins carry key/value types and per-flavor None-ness
+        other: list[tuple[str, float]] = [("a", 9.0)]
+        assert_type(kv_seq.inner_join(other), Sequence[tuple[str, tuple[int, float]]])
+        assert_type(kv_seq.join(other), Sequence[tuple[str, tuple[int, float]]])
+        assert_type(
+            kv_seq.join(other, "left"),
+            Sequence[tuple[str, tuple[int, Optional[float]]]],
+        )
+        assert_type(
+            kv_seq.left_join(other),
+            Sequence[tuple[str, tuple[int, Optional[float]]]],
+        )
+        assert_type(
+            kv_seq.right_join(other),
+            Sequence[tuple[str, tuple[Optional[int], float]]],
+        )
+        assert_type(
+            kv_seq.outer_join(other),
+            Sequence[tuple[str, tuple[Optional[int], Optional[float]]]],
+        )
+
+        # starmap/smap infer lambda parameters from the tuple element type
+        assert_type(kv_seq.starmap(lambda k, v: v * 1.0), Sequence[float])
+        assert_type(kv_seq.smap(lambda k, v: v * 1.0), Sequence[float])
+
+        # aggregate: one, two, and three argument forms
+        assert_type(seq([1, 2, 3]).aggregate(lambda a, b: a + b), int)
+        assert_type(seq([1, 2, 3]).aggregate("", lambda acc, x: acc + str(x)), str)
+        assert_type(seq([1, 2, 3]).aggregate("", lambda acc, x: acc + str(x), len), int)
+
+        # Numeric reductions preserve the element type
+        assert_type(seq([1, 2, 3]).sum(), int)
+        assert_type(seq([1.0, 2.0]).sum(), float)
+        assert_type(seq([(1, 2)]).sum(lambda x: x[0]), int)
+        assert_type(seq([1, 2, 3]).product(), int)
+        assert_type(seq([1.0, 2.0]).product(), float)
+        assert_type(seq([1, 2]).average(), float)
+        assert_type(kv_seq.average(lambda x: x[1]), float)
+
+        # Indexing: int index yields an element, slice yields a Sequence
+        assert_type(seq([1, 2, 3])[0], int)
+        assert_type(seq([1, 2, 3])[0:2], Sequence[int])
+
+        # File and database inputs
+        assert_type(seq.open("file.txt"), Sequence[str])
+        assert_type(seq.open("file.txt", delimiter=","), Sequence[str])
+        assert_type(seq.open("file.bin", mode="rb"), Sequence[bytes])
+        assert_type(seq.csv("file.csv"), Sequence[list[str]])
+        assert_type(seq.jsonl("file.jsonl"), Sequence[Any])
+        assert_type(seq.sqlite3("db.sqlite", "select * from t"), Sequence[Any])

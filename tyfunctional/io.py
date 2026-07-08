@@ -83,7 +83,7 @@ class ReusableFile(Generic[_FileConv_co]):
             return file_content.read()
 
 
-class CompressedFile(ReusableFile):
+class CompressedFile(ReusableFile[Any]):
     magic_bytes: bytes | None = None
 
     # pylint: disable=unknown-option-value

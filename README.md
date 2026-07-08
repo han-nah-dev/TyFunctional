@@ -1,13 +1,13 @@
-# PyFunctional
+# TyFunctional
 
-![Build Status](https://github.com/EntilZha/PyFunctional/workflows/Python%20package/badge.svg)
-[![Code Coverage](https://codecov.io/gh/EntilZha/PyFunctional/branch/master/graph/badge.svg)](https://codecov.io/gh/EntilZha/PyFunctional)
-[![ReadTheDocs](https://readthedocs.org/projects/scalafunctional/badge/?version=latest)](http://docs.pyfunctional.pedro.ai)
-[![PyPI version](https://badge.fury.io/py/PyFunctional.svg)](https://badge.fury.io/py/PyFunctional)
+![Build Status](https://github.com/han-nah-dev/TyFunctional/workflows/Python%20package/badge.svg)
+[![Code Coverage](https://codecov.io/gh/han-nah-dev/TyFunctional/branch/master/graph/badge.svg)](https://codecov.io/gh/han-nah-dev/TyFunctional)
+[![ReadTheDocs](https://readthedocs.org/projects/tyfunctional/badge/?version=latest)](https://github.com/han-nah-dev/TyFunctional)
+[![PyPI version](https://badge.fury.io/py/TyFunctional.svg)](https://badge.fury.io/py/TyFunctional)
 
 ## Features
 
-`PyFunctional` makes creating data pipelines easy by using chained functional operators. Here are a
+`TyFunctional` makes creating data pipelines easy by using chained functional operators. Here are a
 few examples of what it can do:
 
 - Chained operators: `seq(1, 2, 3).map(lambda x: x * 2).reduce(lambda x, y: x + y)`
@@ -17,7 +17,7 @@ few examples of what it can do:
 - Complete documentation, rigorous unit test suite, 100% test coverage, and CI which provide
   robustness
 
-`PyFunctional`'s API takes inspiration from Scala collections, Apache Spark RDDs, and Microsoft
+`TyFunctional`'s API takes inspiration from Scala collections, Apache Spark RDDs, and Microsoft
 LINQ.
 
 ## Table of Contents
@@ -27,7 +27,7 @@ LINQ.
    1. [Simple Example](#simple-example)
    2. [Aggregates and Joins](#aggregates-and-joins)
    3. [Reading and Writing SQLite3](#readingwriting-sqlite3)
-   4. [Data Interchange with Pandas](https://github.com/EntilZha/PyFunctional/blob/master/examples/PyFunctional-pandas-tutorial.ipynb)
+   4. [Data Interchange with Pandas](https://github.com/han-nah-dev/TyFunctional/blob/master/examples/TyFunctional-pandas-tutorial.ipynb)
 3. [Writing to Files](#writing-to-files)
 4. [Parallel Execution](#parallel-execution)
 5. [Github Shortform Documentation](#documentation)
@@ -36,29 +36,29 @@ LINQ.
    3. [Transformations and Actions APIs](#transformations-and-actions-apis)
    4. [Lazy Execution](#lazy-execution)
 6. [Contributing and Bug Fixes](#contributing-and-bug-fixes)
-7. [Changelog](https://github.com/EntilZha/PyFunctional/blob/master/CHANGELOG.md)
+7. [Changelog](https://github.com/han-nah-dev/TyFunctional/blob/master/CHANGELOG.md)
 
 ## Installation
 
-`PyFunctional` is available on [pypi](https://pypi.python.org/pypi/PyFunctional) and can be
+`TyFunctional` is available on [pypi](https://pypi.python.org/pypi/TyFunctional) and can be
 installed by running:
 
 ```bash
 # Install from command line
-$ pip install pyfunctional
+$ pip install tyfunctional
 ```
 
-Then in python run: `from functional import seq`
+Then in python run: `from tyfunctional import seq`
 
 ## Examples
 
-`PyFunctional` is useful for many tasks, and can natively open several common file types. Here
+`TyFunctional` is useful for many tasks, and can natively open several common file types. Here
 are a few examples of what you can do.
 
 ### Simple Example
 
 ```python
-from functional import seq
+from tyfunctional import seq
 
 seq(1, 2, 3, 4)\
     .map(lambda x: x * 2)\
@@ -77,7 +77,7 @@ seq(1, 2, 3, 4)\
 
 ### Streams, Transformations and Actions
 
-`PyFunctional` has three types of functions:
+`TyFunctional` has three types of functions:
 
 1. Streams: read data for use by the collections API.
 2. Transformations: transform data from streams with functions such as `map`, `flat_map`, and
@@ -91,7 +91,7 @@ stream, `map` is the transformation, and `reduce` is the action.
 ### Filtering a list of account transactions
 
 ```python
-from functional import seq
+from tyfunctional import seq
 from collections import namedtuple
 
 Transaction = namedtuple('Transaction', 'reason amount')
@@ -117,7 +117,7 @@ food_cost = seq(transactions)\
     .where(lambda x: x.reason == 'food')\
     .select(lambda x: x.amount).sum()
 
-# Using PyFunctional with fn
+# Using TyFunctional with fn
 from fn import _
 food_cost = seq(transactions).filter(_.reason == 'food').map(_.amount).sum()
 ```
@@ -125,7 +125,7 @@ food_cost = seq(transactions).filter(_.reason == 'food').map(_.amount).sum()
 ### Aggregates and Joins
 
 The account transactions example could be done easily in pure python using list comprehensions. To
-show some of the things `PyFunctional` excels at, take a look at a couple of word count examples.
+show some of the things `TyFunctional` excels at, take a look at a couple of word count examples.
 
 ```python
 words = 'I dont want to believe I want to know'.split(' ')
@@ -161,8 +161,8 @@ word_counts = messages\
 ```
 
 Next, let's continue that example but introduce a json database of users from [examples/users.json](examples/users.json).
-In the previous example we showed how `PyFunctional` can do word counts, in the next example let's
-show how `PyFunctional` can join different data sources.
+In the previous example we showed how `TyFunctional` can do word counts, in the next example let's
+show how `TyFunctional` can join different data sources.
 
 ```python
 # First read the json file
@@ -209,7 +209,7 @@ Similarly, there are several more set like functions in addition to `difference`
 
 ### Reading/Writing SQLite3
 
-`PyFunctional` can read and write to SQLite3 database files. In the example below, users are read
+`TyFunctional` can read and write to SQLite3 database files. In the example below, users are read
 from `examples/users.db` which stores them as rows with columns `id:Int` and `name:String`.
 
 ```python
@@ -252,12 +252,12 @@ with sqlite3.connect(':memory:') as conn:
 
 ## Writing to files
 
-Just as `PyFunctional` can read from `csv`, `json`, `jsonl`, `sqlite3`, and text files, it can
+Just as `TyFunctional` can read from `csv`, `json`, `jsonl`, `sqlite3`, and text files, it can
 also write them. For complete API documentation see the collections API table or the official docs.
 
 ### Compressed Files
 
-`PyFunctional` will auto-detect files compressed with `gzip`, `lzma/xz`, and `bz2`. This is done
+`TyFunctional` will auto-detect files compressed with `gzip`, `lzma/xz`, and `bz2`. This is done
 by examining the first several bytes of the file to determine if it is compressed so therefore
 requires no code changes to work.
 
@@ -267,8 +267,8 @@ compression, and `bz2` for bz2 compression.
 
 ### Parallel Execution
 
-The only change required to enable parallelism is to import `from functional import pseq` instead of
-`from functional import seq` and use `pseq` where you would use `seq`. The following
+The only change required to enable parallelism is to import `from tyfunctional import pseq` instead of
+`from tyfunctional import seq` and use `pseq` where you would use `seq`. The following
 operations are run in parallel with more to be implemented in a future release:
 
 - `map`/`select`
@@ -282,11 +282,11 @@ all at once rather than in multiple loops using `multiprocessing`.
 ## Documentation
 
 Shortform documentation is below and full documentation is at
-[docs.pyfunctional.pedro.ai](http://docs.pyfunctional.pedro.ai/en/latest/functional.html).
+[the TyFunctional repository](https://github.com/han-nah-dev/TyFunctional).
 
 ### Streams API
 
-All of `PyFunctional` streams can be accessed through the `seq` object. The primary way to create
+All of `TyFunctional` streams can be accessed through the `seq` object. The primary way to create
 a stream is by calling `seq` with an iterable. The `seq` callable is smart and is able to accept
 multiple types of parameters as shown in the examples below.
 
@@ -328,13 +328,13 @@ seq.sqlite3('filepath', 'select * from data')
 ```
 
 For more information on the parameters that these functions can take, reference the
-[streams documentation](http://docs.pyfunctional.pedro.ai/en/latest/functional.html#module-functional.streams)
+[streams documentation](https://github.com/han-nah-dev/TyFunctional)
 
 ### Transformations and Actions APIs
 
 Below is the complete list of functions which can be called on a stream object from `seq`. For
 complete documentation reference
-[transformation and actions API](http://docs.pyfunctional.pedro.ai/en/latest/functional.html#module-functional.pipeline).
+[transformation and actions API](https://github.com/han-nah-dev/TyFunctional).
 
 | Function                                                                  | Description                                                                                                                                                                                    | Type           |
 |---------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
@@ -418,9 +418,9 @@ complete documentation reference
 
 ### Lazy Execution
 
-Whenever possible, `PyFunctional` will compute lazily. This is accomplished by tracking the list
+Whenever possible, `TyFunctional` will compute lazily. This is accomplished by tracking the list
 of transformations that have been applied to the sequence and only evaluating them when an action is
-called. In `PyFunctional` this is called tracking lineage. This is also responsible for `PyFunctional`'s
+called. In `TyFunctional` this is called tracking lineage. This is also responsible for `TyFunctional`'s
 ability to cache the results of computations to prevent expensive re-computation.
 This is predominantly done to preserve sensible behavior and used sparingly. For example, calling
 `size()` will cache the underlying sequence. If this was not done and the input was an iterator,
@@ -457,7 +457,7 @@ l_elements = elements.to_list()
 ```
 
 Files are given special treatment if opened through the `seq.open` and related APIs.
-`functional.util.ReusableFile` implements a wrapper around the standard python file to support
+`tyfunctional.util.ReusableFile` implements a wrapper around the standard python file to support
 multiple iterations over a single file object while correctly handling iteration termination and
 file closing.
 
@@ -469,7 +469,7 @@ then it is wrapped into a `Sequence`. For instance:
 ```
 >>> s = seq(list(), list())
 >>> type(s.first())
-<class 'functional.pipeline.Sequence'>
+<class 'tyfunctional.pipeline.Sequence'>
 ```
 
 That behaviour can be changed with `no_wrap` option:
@@ -498,45 +498,45 @@ requests and contributors have offered valuable feedback and critique on code. I
 from users of the package, especially what it is used for, what works well, and what could be
 improved.
 
-To contribute, create a fork of `PyFunctional`, make your changes, then make sure that they pass.
+To contribute, create a fork of `TyFunctional`, make your changes, then make sure that they pass.
 In order to be merged, all pull requests must:
 
 - Pass all the unit tests
 - Pass all the pylint tests, or ignore warnings with explanation of why it's correct to do so
-- Not significantly reduce coverage without a good reason ([coveralls.io](coveralls.io/github/EntilZha/PyFunctional))
+- Not significantly reduce coverage without a good reason ([coveralls.io](coveralls.io/github/han-nah-dev/TyFunctional))
 - Edit the `CHANGELOG.md` file in the `Next Release` heading with changes
 
 ## Contact
 
-[Gitter for chat](https://gitter.im/EntilZha/PyFunctional)
+[Gitter for chat](https://gitter.im/han-nah-dev/TyFunctional)
 
 ## Supported Python Versions
 
-- `PyFunctional` 1.6 is tested against Python 3.12 and Python 3.13.
-- `PyFunctional` 1.5 is tested against Python 3.8 to 3.11. PyPy3 is not tested, but bug fixed on best effort basis.
-- `PyFunctional` 1.4 supports and is tested against Python 3.6, Python 3.7, and PyPy3
-- `PyFunctional` 1.4 and above do not support python 2.7
-- `PyFunctional` 1.4 works in Python 3.5, but is not tested against it
-- `PyFunctional` 1.4 and above partially works in 3.8, parallel processing currently has issues, but other feature work fine
-- `PyFunctional` 1.3 and below supports and was tested against Python 2.7, Python 3.5, Python 3.6, PyPy2, and PyPy3
+- `TyFunctional` 1.6 is tested against Python 3.12 and Python 3.13.
+- `TyFunctional` 1.5 is tested against Python 3.8 to 3.11. PyPy3 is not tested, but bug fixed on best effort basis.
+- `TyFunctional` 1.4 supports and is tested against Python 3.6, Python 3.7, and PyPy3
+- `TyFunctional` 1.4 and above do not support python 2.7
+- `TyFunctional` 1.4 works in Python 3.5, but is not tested against it
+- `TyFunctional` 1.4 and above partially works in 3.8, parallel processing currently has issues, but other feature work fine
+- `TyFunctional` 1.3 and below supports and was tested against Python 2.7, Python 3.5, Python 3.6, PyPy2, and PyPy3
 
 ## Changelog
 
-[Changelog](https://github.com/EntilZha/PyFunctional/blob/master/CHANGELOG.md)
+[Changelog](https://github.com/han-nah-dev/TyFunctional/blob/master/CHANGELOG.md)
 
 ## About me
 
 To learn more about me (the author) visit my webpage at
 [pedro.ai](https://www.pedro.ai).
 
-I created `PyFunctional` while using Python extensively, and finding that I missed the
+I created `TyFunctional` while using Python extensively, and finding that I missed the
 ease of use for manipulating data that Spark RDDs and Scala collections have. The project takes the
 best ideas from these APIs as well as LINQ to provide an easy way to manipulate data when using
 Scala is not an option or PySpark is overkill.
 
 ## Contributors
 
-These people have generously contributed their time to improving `PyFunctional`
+These people have generously contributed their time to improving `TyFunctional`
 
 - [versae](https://github.com/versae)
 - [adrian17](https://github.com/adrian17)

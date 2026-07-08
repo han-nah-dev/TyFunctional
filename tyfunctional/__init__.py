@@ -3,7 +3,9 @@ Package for creating data pipelines, LINQ-style data analysis, and functional pr
 the primary entrypoint at streams.seq
 """
 
-from functional.streams import seq, pseq  # noqa: F401
+from tyfunctional.streams import seq, pseq  # noqa: F401
+
+__all__ = ["seq", "pseq"]
 
 __author__ = "Pedro Rodriguez"
 __copyright__ = "Copyright 2024, Pedro Rodriguez"

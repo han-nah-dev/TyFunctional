@@ -90,19 +90,19 @@ main() {
 
   echo
 
-  poetry run pylint functional
+  poetry run pylint tyfunctional
 
   echo
 
-  poetry run ruff check functional
+  poetry run ruff check tyfunctional
 
   echo
 
-  poetry run black --diff --color --check functional
+  poetry run black --diff --color --check tyfunctional
 
   echo
 
-  poetry run mypy functional
+  poetry run mypy tyfunctional
 
   echo
 

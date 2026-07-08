@@ -55,10 +55,11 @@ docs/_build/
 # PyBuilder
 target/
 
-functional/test/data/tmp
+tyfunctional/test/data/tmp
 .ipynb_checkpoints/
 .mypy_cache/
 .vscode/
 .python-version
 .watchman-*
 .coverage.*
+.venv/

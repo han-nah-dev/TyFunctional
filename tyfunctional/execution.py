@@ -1,5 +1,5 @@
 from functools import partial
-from functional.util import compose, parallelize
+from tyfunctional.util import compose, parallelize
 
 
 class ExecutionStrategies:

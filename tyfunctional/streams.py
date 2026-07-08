@@ -6,14 +6,14 @@ import sqlite3 as sqlite3api
 import builtins
 
 from itertools import chain
-from typing import Any, SupportsIndex, TypeVar, overload
+from typing import Any, Literal, SupportsIndex, TypeVar, overload
 from collections.abc import Iterable, Iterator
 import typing
 
-from functional.execution import ExecutionEngine, ParallelExecutionEngine
-from functional.pipeline import Sequence
-from functional.util import is_primitive, default_value
-from functional.io import get_read_function
+from tyfunctional.execution import ExecutionEngine, ParallelExecutionEngine
+from tyfunctional.pipeline import Sequence
+from tyfunctional.util import is_primitive, default_value
+from tyfunctional.io import get_read_function
 
 if typing.TYPE_CHECKING:
     from _typeshed import SupportsRead
@@ -133,6 +133,50 @@ class Stream:
                 max_repr_items=self.max_repr_items,
                 no_wrap=_no_wrap,
             )
+
+    # pylint: disable=unknown-option-value
+    # pylint: disable=too-many-positional-arguments
+    @overload
+    def open(
+        self,
+        path: str,
+        delimiter: str | None = None,
+        mode: Literal["r", "rt", "tr"] = "r",
+        buffering: int = -1,
+        encoding: str | None = None,
+        errors: str | None = None,
+        newline: str | None = None,
+    ) -> Sequence[str]:
+        ...
+
+    @overload
+    def open(
+        self,
+        path: str,
+        delimiter: None = None,
+        *,
+        mode: Literal["rb", "br"],
+        buffering: int = -1,
+        encoding: str | None = None,
+        errors: str | None = None,
+        newline: str | None = None,
+    ) -> Sequence[bytes]:
+        ...
+
+    # pylint: disable=unknown-option-value
+    # pylint: disable=too-many-positional-arguments
+    @overload
+    def open(
+        self,
+        path: str,
+        delimiter: str | None = None,
+        mode: str = "r",
+        buffering: int = -1,
+        encoding: str | None = None,
+        errors: str | None = None,
+        newline: str | None = None,
+    ) -> Sequence[Any]:
+        ...
 
     # pylint: disable=unknown-option-value
     # pylint: disable=too-many-positional-arguments
@@ -323,7 +367,14 @@ class Stream:
             return self(json_input.items())
 
     # pylint: disable=keyword-arg-before-vararg
-    def sqlite3(self, conn, sql, parameters=None, *args, **kwargs):
+    def sqlite3(
+        self,
+        conn: str | sqlite3api.Connection | sqlite3api.Cursor,
+        sql: str,
+        parameters: typing.Sequence[Any] | dict[str, Any] | None = None,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Sequence[Any]:
         """
         Reads input by querying from a sqlite database.
 
@@ -352,16 +403,16 @@ class Stream:
 
 class ParallelStream(Stream):
     """
-    Parallelized version of functional.streams.Stream normally accessible as `pseq`
+    Parallelized version of tyfunctional.streams.Stream normally accessible as `pseq`
     """
 
     def __init__(
         self,
-        processes=None,
-        partition_size=None,
-        disable_compression=False,
-        no_wrap=None,
-    ):
+        processes: int | None = None,
+        partition_size: int | None = None,
+        disable_compression: bool = False,
+        no_wrap: bool | None = None,
+    ) -> None:
         """
         Configure Stream for parallel processing and file compression detection
         :param processes: Number of parallel processes
@@ -373,6 +424,21 @@ class ParallelStream(Stream):
         )
         self.processes = processes
         self.partition_size = partition_size
+
+    @overload
+    def __call__(
+        self,
+        args: list[_T] | tuple[_T] | Iterable[_T] | Sequence[_T],
+        no_wrap: bool | None = None,
+        **kwargs: Any,
+    ) -> Sequence[_T]:
+        ...
+
+    @overload
+    def __call__(
+        self, *args: _T, no_wrap: bool | None = None, **kwargs: Any
+    ) -> Sequence[_T]:
+        ...
 
     def __call__(self, *args, no_wrap=None, **kwargs):
         """

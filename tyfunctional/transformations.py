@@ -12,8 +12,9 @@ from itertools import (
 import collections
 import types
 from collections.abc import Callable
+from typing import Any
 
-from functional.execution import ExecutionStrategies
+from tyfunctional.execution import ExecutionStrategies
 
 
 #: Defines a Transformation from a name, function, and execution_strategies
@@ -25,7 +26,7 @@ Transformation = collections.namedtuple(
 CACHE_T = Transformation("cache", None, None)
 
 
-def name(function: Callable):
+def name(function: Callable[..., Any]):
     """
     Retrieve a pretty name for the function
     :param function: function to get name from
@@ -37,7 +38,7 @@ def name(function: Callable):
         return str(function)
 
 
-def map_t(func: Callable):
+def map_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.map
     :param func: map function
@@ -50,7 +51,7 @@ def map_t(func: Callable):
     )
 
 
-def select_t(func: Callable):
+def select_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.select
     :param func: select function
@@ -63,7 +64,7 @@ def select_t(func: Callable):
     )
 
 
-def starmap_t(func: Callable):
+def starmap_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.starmap and Sequence.smap
     :param func: starmap function
@@ -76,7 +77,7 @@ def starmap_t(func: Callable):
     )
 
 
-def filter_t(func: Callable):
+def filter_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.filter
     :param func: filter function
@@ -89,7 +90,7 @@ def filter_t(func: Callable):
     )
 
 
-def where_t(func: Callable):
+def where_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.where
     :param func: where function
@@ -102,7 +103,7 @@ def where_t(func: Callable):
     )
 
 
-def filter_not_t(func: Callable):
+def filter_not_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.filter_not
     :param func: filter_not function
@@ -154,7 +155,7 @@ def distinct_t():
     return Transformation("distinct", distinct, None)
 
 
-def distinct_by_t(func: Callable):
+def distinct_by_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.distinct_by
     :param func: distinct_by function
@@ -184,7 +185,7 @@ def sorted_t(key=None, reverse: bool = False):
     )
 
 
-def order_by_t(func: Callable):
+def order_by_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.order_by
     :param func: order_by function
@@ -225,7 +226,7 @@ def drop_t(n: int):
     )
 
 
-def drop_while_t(func: Callable):
+def drop_while_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.drop_while
     :param func: drops while func is true
@@ -243,7 +244,7 @@ def take_t(n: int):
     return Transformation(f"take({n})", lambda sequence: islice(sequence, 0, n), None)
 
 
-def take_while_t(func: Callable):
+def take_while_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.take_while
     :param func: takes while func is True
@@ -252,7 +253,7 @@ def take_while_t(func: Callable):
     return Transformation(f"take_while({name(func)})", partial(takewhile, func), None)
 
 
-def flat_map_impl(func: Callable, sequence):
+def flat_map_impl(func: Callable[..., Any], sequence):
     """
     Implementation for flat_map_t
     :param func: function to map
@@ -720,7 +721,7 @@ def peek_impl(func, sequence):
         yield element
 
 
-def peek_t(func: Callable):
+def peek_t(func: Callable[..., Any]):
     """
     Transformation for Sequence.peek
     :param func: peek function

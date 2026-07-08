@@ -4,11 +4,11 @@ API Documentation
 Streams API
 -----------
 
-The streams API enables you to read data into `PyFunctional`. The `seq` function imported with
-`from functional import seq` is actually an instance of `functional.streams.Stream`. Therefore,
+The streams API enables you to read data into `TyFunctional`. The `seq` function imported with
+`from tyfunctional import seq` is actually an instance of `tyfunctional.streams.Stream`. Therefore,
 all the methods available on `seq` such as `seq.csv` are documented in the `Streams` class.
 
-.. automodule:: functional.streams
+.. automodule:: tyfunctional.streams
     :members:
     :undoc-members:
     :show-inheritance:
@@ -16,7 +16,7 @@ all the methods available on `seq` such as `seq.csv` are documented in the `Stre
 Transformations and Actions API
 -------------------------------
 
-.. automodule:: functional.pipeline
+.. automodule:: tyfunctional.pipeline
     :members:
     :undoc-members:
     :show-inheritance:

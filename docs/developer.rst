@@ -1,50 +1,50 @@
 Developer Documentation
 =======================
 
-functional.streams
+tyfunctional.streams
 ------------------
 
-.. automodule:: functional.streams
+.. automodule:: tyfunctional.streams
     :members:
     :private-members:
     :special-members:
     :undoc-members:
     :show-inheritance:
 
-functional.pipeline
+tyfunctional.pipeline
 -------------------
 
-.. automodule:: functional.pipeline
+.. automodule:: tyfunctional.pipeline
     :members:
     :private-members:
     :special-members:
     :undoc-members:
     :show-inheritance:
 
-functional.lineage
+tyfunctional.lineage
 ------------------
 
-.. automodule:: functional.lineage
+.. automodule:: tyfunctional.lineage
     :members:
     :private-members:
     :special-members:
     :undoc-members:
     :show-inheritance:
 
-functional.transformations
+tyfunctional.transformations
 --------------------------
 
-.. automodule:: functional.transformations
+.. automodule:: tyfunctional.transformations
     :members:
     :private-members:
     :special-members:
     :undoc-members:
     :show-inheritance:
 
-functional.util
+tyfunctional.util
 ---------------
 
-.. automodule:: functional.util
+.. automodule:: tyfunctional.util
     :members:
     :private-members:
     :special-members:

@@ -38,26 +38,26 @@
 
 ## Release 1.1.3
 
-- Fixed bug in `partition` https://github.com/EntilZha/PyFunctional/issues/124
+- Fixed bug in `partition` https://github.com/han-nah-dev/TyFunctional/issues/124
 
 ## Release 1.1.0
 
 - Implemented optimized version of `reduce_by_key`
 - Implemented `count_by_key`
 - Implemented `count_by_value`
-- Implemented `accumulate` https://github.com/EntilZha/PyFunctional/pull/104
-- Added support for variance on versions of certain packages: https://github.com/EntilZha/PyFunctional/pull/117 and https://github.com/EntilZha/PyFunctional/pull/116
+- Implemented `accumulate` https://github.com/han-nah-dev/TyFunctional/pull/104
+- Added support for variance on versions of certain packages: https://github.com/han-nah-dev/TyFunctional/pull/117 and https://github.com/han-nah-dev/TyFunctional/pull/116
 - Various typo fixes
 - Various CI fixes
 - Dropped CI testing and official support for Python 3.3
-- Made import much faster by loading pandas more lazily https://github.com/EntilZha/PyFunctional/issues/99
+- Made import much faster by loading pandas more lazily https://github.com/han-nah-dev/TyFunctional/issues/99
 
 ### Bug Fixes
 
-- Fixed bug in `grouped` https://github.com/EntilZha/PyFunctional/pull/123
-- Fixed bug in `to_csv` https://github.com/EntilZha/PyFunctional/pull/123
-- Fixed bug with incorrect wrapping of pandas dataframes https://github.com/EntilZha/PyFunctional/pull/122
-- Fixed issue with `first/head` evaluating entire sequence https://github.com/EntilZha/PyFunctional/commit/fb8f3686cf94f072f4e6ed23a361952de1447dc8
+- Fixed bug in `grouped` https://github.com/han-nah-dev/TyFunctional/pull/123
+- Fixed bug in `to_csv` https://github.com/han-nah-dev/TyFunctional/pull/123
+- Fixed bug with incorrect wrapping of pandas dataframes https://github.com/han-nah-dev/TyFunctional/pull/122
+- Fixed issue with `first/head` evaluating entire sequence https://github.com/han-nah-dev/TyFunctional/commit/fb8f3686cf94f072f4e6ed23a361952de1447dc8
 
 ## Release 1.0.0
 
@@ -65,17 +65,17 @@ Reaching `1.0` primarily means that API stability has been reached, so I don't e
 
 ### New Features
 
-- Added optional initial value for `reduce` (https://github.com/EntilZha/PyFunctional/issues/86)
-- Added table of contents to readme (https://github.com/EntilZha/PyFunctional/issues/88)
-- Added data interchange tutorial with pandas (https://github.com/EntilZha/PyFunctional/blob/master/examples/PyFunctional-pandas-tutorial.ipynb)
-- Implemented `itertools.starmap` as `Sequence.starmap` and `Sequence.smap` (https://github.com/EntilZha/PyFunctional/issues/90)
-- Added interface to `csv.DictReader` via `seq.csv_dict_reader` (https://github.com/EntilZha/PyFunctional/issues/92)
-- Improved `_html_repr_`, `show` and `tabulate` by auto detecting named tuples as column names (https://github.com/EntilZha/PyFunctional/issues/91)
-- Improved `_html_repr_` and `show` to tell the user 10 of N rows are being shown if there are more than 10 rows (https://github.com/EntilZha/PyFunctional/issues/94)
+- Added optional initial value for `reduce` (https://github.com/han-nah-dev/TyFunctional/issues/86)
+- Added table of contents to readme (https://github.com/han-nah-dev/TyFunctional/issues/88)
+- Added data interchange tutorial with pandas (https://github.com/han-nah-dev/TyFunctional/blob/master/examples/TyFunctional-pandas-tutorial.ipynb)
+- Implemented `itertools.starmap` as `Sequence.starmap` and `Sequence.smap` (https://github.com/han-nah-dev/TyFunctional/issues/90)
+- Added interface to `csv.DictReader` via `seq.csv_dict_reader` (https://github.com/han-nah-dev/TyFunctional/issues/92)
+- Improved `_html_repr_`, `show` and `tabulate` by auto detecting named tuples as column names (https://github.com/han-nah-dev/TyFunctional/issues/91)
+- Improved `_html_repr_` and `show` to tell the user 10 of N rows are being shown if there are more than 10 rows (https://github.com/han-nah-dev/TyFunctional/issues/94)
 
 ### Dependencies and Supported Python Versions
 
-- Bumped version dependencies (https://github.com/EntilZha/PyFunctional/issues/89)
+- Bumped version dependencies (https://github.com/han-nah-dev/TyFunctional/issues/89)
 - Added Python 3.6 via Travis CI testing
 
 ## Release 0.8.0
@@ -96,15 +96,15 @@ Reaching `1.0` primarily means that API stability has been reached, so I don't e
 
 ### New Features
 
-- Auto parallelization by using `pseq` instead of `seq`. Details at https://github.com/EntilZha/PyFunctional/issues/47
+- Auto parallelization by using `pseq` instead of `seq`. Details at https://github.com/han-nah-dev/TyFunctional/issues/47
 - Parallel functions: `map`, `select`, `filter`, `filter_not`, `where`, `flatten`, and `flat_map`
-- Compressed file IO support for `gzip`/`lzma`/`bz2` as detailed at https://github.com/EntilZha/PyFunctional/issues/54
+- Compressed file IO support for `gzip`/`lzma`/`bz2` as detailed at https://github.com/han-nah-dev/TyFunctional/issues/54
 - Cartesian product from `itertools.product` implemented as `Pipeline.cartesian`
-- Website at [pyfunctional.pedro.ai](http://pyfunctional.pedro.ai) and docs at [docs.pyfunctional.pedro.ai](http://docs.pyfunctional.pedro.ai)
+- Website and docs at [github.com/han-nah-dev/TyFunctional](https://github.com/han-nah-dev/TyFunctional)
 
 ### Bug Fixes
 
-- No option for encoding in `to_json` https://github.com/EntilZha/PyFunctional/issues/70
+- No option for encoding in `to_json` https://github.com/han-nah-dev/TyFunctional/issues/70
 
 ### Internal Changes
 
@@ -120,7 +120,7 @@ Reaching `1.0` primarily means that API stability has been reached, so I don't e
 ### New Features
 
 - Added support for reading to and from SQLite databases
-- Changed project name from `ScalaFunctional` to `PyFunctional` 
+- Changed project name from `TyFunctional` to `TyFunctional` 
 - Added `to_pandas` call integration
 
 ### Internal Changes
@@ -154,7 +154,7 @@ Fixed python 3 build error due to wheel installation of enum34. Package no longe
 
 ### New Features
 
-- Official and tested support for python 3.5. Thus `ScalaFunctional` is tested on Python 2.7, 3.3,
+- Official and tested support for python 3.5. Thus `TyFunctional` is tested on Python 2.7, 3.3,
   3.4, 3.5, pypy, and pypy3
 - `aggregate` from LINQ
 - `order_by` from LINQ

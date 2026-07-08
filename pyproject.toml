@@ -1,15 +1,13 @@
-[tool.poetry]
-name = "PyFunctional"
+[project]
+name = "TyFunctional"
 version = "1.5.0"
 description = "Package for creating data pipelines with chain functional programming"
-authors = ["Pedro Rodriguez <me@pedro.ai>"]
-maintainers = ["Pedro Rodriguez <me@pedro.ai>"]
+authors = [{ name = "Pedro Rodriguez", email = "me@pedro.ai" }]
+maintainers = [{ name = "Pedro Rodriguez", email = "me@pedro.ai" }]
 readme = "README.md"
-homepage = "https://github.com/EntilZha/PyFunctional"
-repository = "https://github.com/EntilZha/PyFunctional"
-documentation = "https://docs.pyfunctional.pedro.ai/en/master/"
-keywords = ["functional", "pipeline", "collection", "chain", "linq", "parallel"]
 license = "MIT"
+requires-python = ">=3.9,<4.0"
+keywords = ["functional", "pipeline", "collection", "chain", "linq", "parallel"]
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',
@@ -26,16 +24,21 @@ classifiers = [
     'Operating System :: OS Independent',
     'Topic :: Software Development :: Libraries :: Python Modules',
 ]
-packages = [{ include = "functional" }]
+dependencies = [
+    "dill>=0.2.5",
+    "tabulate<=1.0.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.9.0"
-dill = ">=0.2.5"
-tabulate = "<=1.0.0"
-pandas = { version = ">=1.0.3", optional = true }
+[project.optional-dependencies]
+all = ["pandas>=1.0.3"]
 
-[tool.poetry.extras]
-all = ["pandas"]
+[project.urls]
+Homepage = "https://github.com/han-nah-dev/TyFunctional"
+Repository = "https://github.com/han-nah-dev/TyFunctional"
+Documentation = "https://github.com/han-nah-dev/TyFunctional"
+
+[tool.poetry]
+packages = [{ include = "tyfunctional" }]
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1"
@@ -48,9 +51,23 @@ mypy = "^1.1.1"
 types-tabulate = "^0.9.0.3"
 pandas-stubs = "^2.0.3.230814"
 
+[dependency-groups]
+# Mirrors tool.poetry.group.dev.dependencies above for uv/PEP 735 tooling; Poetry (<2.0) only reads the tool.poetry table.
+dev = [
+    "black>=23.1,<24",
+    "parametrize>=0.1.1,<0.2",
+    "pytest>=7.3.1,<8",
+    "pylint>=3.3.3,<4",
+    "pytest-cov>=4.0.0,<5",
+    "coverage>=7.2.5,<8",
+    "mypy>=1.1.1,<2",
+    "types-tabulate>=0.9.0.3,<0.10",
+    "pandas-stubs>=2.0.3.230814,<3",
+]
+
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.coverage.report]
 exclude_lines = [
@@ -61,12 +78,12 @@ exclude_lines = [
 
 # COMMON SETTINGS BELOW
 [tool.pyright]
-pythonVersion = "3.8"
+pythonVersion = "3.9"
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 check_untyped_defs = false
-disallow_any_generics = false
+disallow_any_generics = true
 disallow_incomplete_defs = false
 disallow_untyped_defs = false
 no_implicit_optional = true
