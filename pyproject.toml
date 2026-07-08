@@ -2,8 +2,8 @@
 name = "TyFunctional"
 version = "1.5.0"
 description = "Package for creating data pipelines with chain functional programming"
-authors = [{ name = "Pedro Rodriguez", email = "me@pedro.ai" }]
-maintainers = [{ name = "Pedro Rodriguez", email = "me@pedro.ai" }]
+authors = [{ name = "Hannah Ritter"}]
+maintainers = [{ name = "Hannah Ritter"}]
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.9,<4.0"
