@@ -1,6 +1,7 @@
 # TyFunctional
 
 A fork of PyFunctional, adding return types to chained functions. Now, the result of a chained operator `seq(1, 2, 3).map(lambda x: MyObj(x)).to_list()` is not just `Iterable | tuple | Any`, but actually `list[MyObj]`.
+Just a quick and dirty port using Fable 5, did not update the docs or anything.
 
 ![Build Status](https://github.com/han-nah-dev/TyFunctional/workflows/Python%20package/badge.svg)
 [![Code Coverage](https://codecov.io/gh/han-nah-dev/TyFunctional/branch/master/graph/badge.svg)](https://codecov.io/gh/han-nah-dev/TyFunctional)
